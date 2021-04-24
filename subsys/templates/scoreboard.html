@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block head%}
+<style>
+    .table {
+        margin-left: 2em;
+        margin-bottom: 20px;
+        max-width: 100%;
+        table-layout: fixed;
+        width: 100%;
+    }
+</style>
+{% endblock%}
+{% block body %}
+<div class="container">
+</p>
+<h3>記分板</h3>
+</p>
+</div>
+<div class="table-responsive">
+<table class="table">
+    <thead>
+    <tr>
+        <th class="text-center" style="width: 120px; left: 40px;" scope="col">Username</th>
+        <th class="text-center" style="width: 40px; left: 160px;" scope="col">AC</th>
+            {% if toj_pids is not none%}
+                {% for pid in toj_pids %}
+                    <th class="text-center" style="width: 40px; left: 40px;" scope="col">TOJ<br>{{pid}}</th>
+                {% endfor%}
+            {% endif %}
+            {% if uva_pnums is not none%}
+                {% for pid in uva_pnums %}
+                    <th class="text-center" style="width: 40px; left: 40px;" scope="col">UVa<br>{{pid}}</th>
+                {% endfor%}
+            {% endif %}
+            {% if zoj_pids is not none%}
+                {% for pid in zoj_pids %}
+                    <th class="text-center" style="width: 40px; left: 40px;" scope="col">ZOJ<br>{{pid}}</th>
+                {% endfor%}
+            {% endif %}
+            {% if atcoder_pids is not none%}
+                {% for pid in atcoder_pids %}
+                    <th class="text-center" style="width: 40px; left: 40px;" scope="col">AtCoder<br>{{pid}}</th>
+                {% endfor%}
+            {% endif %}
+            {% if cf_pids is not none%}
+                {% for pid in cf_pids %}
+                    <th class="text-center" style="width: 40px; left: 40px;" scope="col">CodeForces<br>{{pid}}</th>
+                {% endfor%}
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        <!---
+            UVa stat
+        ---->
+        {% for user in users %}
+            <tr>
+                <td class="text-center" style="font-size:110%;"> Koios1143 </td>
+                <td class="text-center" style="color: #00cc00; font-size:150%;"> ● </td>
+                {% for stat in stat_res[user]['UVa'] %}
+                        {% if stat_res[user]['UVa'][stat] is sameas  none%}
+                            <td class="text-center" style="color: #444444; font-size:150%;"> ● </td>
+                        {% elif stat_res[user]['UVa'][stat] is sameas "AC" %}
+                            <td class="text-center" style="color: #00cc00; font-size:150%;"> ● </td>
+                        {% elif stat_res[user]['UVa'][stat] is sameas "WA" %}
+                            <td class="text-center" style="color: #cc0000; font-size:150%;"> ● </td>
+                        {% elif stat_res[user]['UVa'][stat] is sameas "CE" %}
+                            <td class="text-center" style="color: #ffeb00; font-size:150%;"> ● </td>
+                        {% elif stat_res[user]['UVa'][stat] is sameas "RE" %}
+                            <td class="text-center" style="color: #27fff6; font-size:150%;"> ● </td>
+                        {% elif stat_res[user]['UVa'][stat] is sameas "TLE" %}
+                            <td class="text-center" style="color: #70649a; font-size:150%;"> ● </td>
+                        {% elif stat_res[user]['UVa'][stat] is sameas "MLE" %}
+                            <td class="text-center" style="color: #e83015; font-size:150%;"> ● </td>
+                        {% else %}
+                            <td class="text-center" style="color: #17202A; font-size:150%;"> ● </td>
+                        {% endif %}
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}
+{% block username %}
+    {% if current_user.is_authenticated %}
+        <li class="nav-item">
+            <a class="nav-link" href="{{url_for('userpage')}}"> {{current_user.username}} </a>
+        </li>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block body %}
+    <div class="container"></p>
+    <h3>記分板</h3>
+</p>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Founder</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in table %}
+            <tr>
+                <th scope="row">
+                    {{ row.id }}
+                </th>
+                <td>
+                    <a href="{{ url_for('scoreboard') }}?mode=spec_list&id={{ row.id }}">
+                        {{ row.name }}
+                    </a>
+                </td>
+                <td>
+                    {{ row.founder }}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<ul class="pagination justify-content-center">
+    <li class="page-item">
+        <a class="page-link" href="{{url_for('scoreboard')}}?mode=list&page=1"> « </a>
+    </li>
+
+    <!---
+    checking previous page activate or not
+    ---->
+    {% if current is sameas 1%}
+        <li class="page-item inactivate">
+            <a class="page-link"> < </a>
+        </li>
+    {% else %}
+        <li class="page-item">
+            <a class="page-link" href="{{url_for('scoreboard')}}?mode=list&page={{current - 1}}"> < </a>
+        </li>
+    {% endif %}
+
+    {% for page in pages%}
+        {% if page is sameas current %}
+            <li class="page-item active" aria-current="page">
+                <span class="page-link">
+                    <a href="{{url_for('scoreboard')}}?mode=list&page={{page}}" style="color:white;">{{page}}</a>
+                </span>
+            </li>
+        {% else %}
+            <li class="page-item" aria-current="page">
+                <span class="page-link">
+                    <a href="{{url_for('scoreboard')}}?mode=list&page={{page}}">{{page}}</a>
+                </span>
+            </li>
+        {% endif %}
+    {% endfor %}
+
+    <!---
+    checking next page activate or not
+    ---->
+    {% if pages|last is sameas current %}
+        <li class="page-item">
+            <a class="page-link inactivate"> > </a>
+        </li>
+    {% else %}
+        <li class="page-item">
+            <a class="page-link" href="{{url_for('scoreboard')}}?mode=list&page={{current + 1}}"> > </a>
+        </li>
+    {% endif %}
+
+    <li class="page-item">
+        <a class="page-link" href="{{url_for('scoreboard')}}?mode=list&page={{pages|length}}"> » </a>
+    </li>
+</ul>
+
+{% endblock %}
+{% block username %}
+{% if current_user.is_authenticated %}
+<li class="nav-item">
+    <a class="nav-link" href="{{url_for('userpage')}}">
+        {{current_user.username}}
+    </a>
+</li>
+{% endif %}
+{% endblock %}

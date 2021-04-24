@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}<title>首頁 ｜Login Exp</title>{% endblock %}
+{% block body %}
+{% endblock %}
+{% block username %}
+    {% if current_user.is_authenticated %}
+        <li class="nav-item">
+            <a class="nav-link" href="{{url_for('userpage')}}"> {{current_user.username}} </a>
+        </li>
+    {% endif %}
+{% endblock %}

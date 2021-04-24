@@ -1,0 +1,19 @@
+<!---
+This page is used as error page
+---->
+
+{% extends "base.html" %}
+{% block body %}
+    <div class="container">
+        <center><h1>{{message}}</h1><center>
+    </div>
+{% endblock %}
+{% block username %}
+    {% if current_user.is_authenticated %}
+        <li class="nav-item">
+            <a class="nav-link" href="{{url_for('userpage')}}">
+                {{current_user.username}}
+            </a>
+        </li>
+    {% endif %}
+{% endblock %}
