@@ -84,7 +84,7 @@ def UVa(username, userID, problemNum):
     url= "https://uhunt.onlinejudge.org/api/subs-pids/"+ userID + "/"+ str(problemID) + "/999999"
     Submit= eval(requests.get(url).text)[userID]['subs']
     State= []
-
+    
     if len(Submit)==0:
         return "NE"
     for i in range(0, len(Submit)):
@@ -102,14 +102,32 @@ def CodeForces(username, userID, problemID):
     except:
         return "UidNotfound"
     State= []
+    
     for arr in eval(res.replace("false", "False"))['result']:
         if problemID==(str(arr["problem"]["contestId"]) + arr["problem"]["index"]):
+            found= True
             if arr["verdict"]=="OK":
                 return "Accepted"
-            else:
-                State.append([arr["creationTimeSeconds"], arr["verdict"]])
+            State.append([arr["creationTimeSeconds"], arr["verdict"]])
     State.sort(key= lambda s: s[0])
     if len(State)==0:
         return "NE"
-    else:
-        return State[-1][1]
+    return State[-1][1]
+
+
+def AtCoder(username, userID, problemID):
+    url= "https://kenkoooo.com/atcoder/atcoder-api/results?user=" + username
+    res= requests.get(url)
+    if not(res.status_code==200):
+        return "AtCoder was broken"
+    res= eval(res.text.replace("null", "None"))
+    State= []
+    for sub in res:
+        if sub["problem_id"]==problemID:
+            found= True
+            if sub["result"]=='AC':
+                return "AC"
+            State.append(sub["result"])
+    if len(State)==0:
+        return "NE"
+    return State[-1][1]
